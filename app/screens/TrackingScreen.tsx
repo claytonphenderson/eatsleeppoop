@@ -11,27 +11,25 @@ export const TrackingScreen = () => {
     return (
         <Screen>
             <View className="flex flex-1">
-                <View>
-                    <Header text="Eat. Sleep. Poop."></Header>
+                <View className="flex flex-1 justify-center items-center">
+                    <Text className="text-6xl p-10">🍼 💤 💩</Text>
                 </View>
-                <View className="flex flex-1">
-                </View>
-                <View className="gap-3">
+                <View className="gap-3 pb-3">
                     <View>
                         <Text className="text-2xl font-semibold text-black">What did the baby do?</Text>
                     </View>
                     <View className="gap-3">
-                        <TouchableOpacity onPress={() => navigation.navigate('RecordScreen', { subject: 'Eat' })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('RecordEatingScreen')}>
                             <Card>
                                 <Subheader text='Eat' subtext='Record time and duration of feeding'></Subheader>
                             </Card>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('RecordScreen', { subject: 'Sleep' })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('RecordSleepingScreen')}>
                             <Card>
                                 <Subheader text='Sleep' subtext='Record a sleep session'></Subheader>
                             </Card>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('RecordScreen', { subject: 'Poop' })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('RecordPoopScreen')}>
                             <Card>
                                 <Subheader text='Poop' subtext='Record a dirty diaper'></Subheader>
                             </Card>
