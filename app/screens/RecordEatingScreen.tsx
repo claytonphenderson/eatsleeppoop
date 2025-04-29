@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, TextInput, View } from "react-native";
+import { FlatList, ScrollView, Text, TextInput, View } from "react-native";
 import { Header } from "../components/Header";
 import { Screen } from "../components/Screen";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
@@ -40,7 +40,10 @@ export const RecordEatingScreen = (props: any) => {
             <View className="flex flex-1">
 
             </View>
-            <View style={{ height: 340 }} className="gap-5">
+            <View style={{ height: 360 }} className="gap-5">
+                <View className="flex items-center">
+                    <Text className="text-black text-base">Swipe to the right for more 👉</Text>
+                </View>
                 <FlatList
                     ref={listRef}
                     horizontal
@@ -118,7 +121,7 @@ const Notes = (props: { noteState: [string, React.Dispatch<React.SetStateAction<
     return (
         <Card>
             <View className="min-w-80">
-                <Subheader text='Notes' subtext="Anything interesting?"></Subheader>
+                <Subheader text='Notes' subtext="Anything interesting? (optional)"></Subheader>
             </View>
             <View className="flex-1 align-middle justify-center pt-3">
                 <TextInput onChangeText={(t) => setNote(t)} className="bg-slate-50 flex-1 rounded-lg p-3 max-w-80" verticalAlign="top" multiline></TextInput>
