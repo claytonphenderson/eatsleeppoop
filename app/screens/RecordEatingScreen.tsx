@@ -13,13 +13,16 @@ import { useMMKVBoolean } from "react-native-mmkv";
 import { Event } from "../models/event";
 import { ToggleSwitch } from "../components/ToggleSwitch";
 import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
+import moment from "moment";
+import { setReminderNotification } from "../scheduleReminder";
 
 export const RecordEatingScreen = (props: any) => {
     const listRef = useRef<FlatList>(null);
     const [selected, setSelected] = useState(0);
     const [date, setDate] = useState(new Date());
     const [notes, setNotes] = useState('');
-    const options = [<DateStep dateState={[date, setDate]} />, <HowMuch selectedState={[selected, setSelected]} />, <Notes noteState={[notes, setNotes]} />];
+    const [reminderHrs, setReminderHrs] = useState(0);
+    const options = [<DateStep dateState={[date, setDate]} />, <HowMuch selectedState={[selected, setSelected]} />, <Notes noteState={[notes, setNotes]} />, <Reminder reminderHours={[reminderHrs, setReminderHrs]} />];
     const navigation = useNavigation<TrackingNavigation>();
     const [measureInMin, setMeasureInMin] = useMMKVBoolean('settings-eatingMeasureInMin');
     const keyboardVisible = useKeyboardVisible();
@@ -36,6 +39,12 @@ export const RecordEatingScreen = (props: any) => {
         else val.mlConsumed = selected;
 
         storage.set(`eat-${date.getTime()}`, JSON.stringify(val));
+
+        if (reminderHrs > 0) {
+            const dueDate = moment(new Date).add(reminderHrs, 'hours').toDate();
+            setReminderNotification({ date: dueDate, message: 'Time to feed baby!' })
+        }
+
         navigation.navigate('TrackingScreen');
     }
 
@@ -172,4 +181,40 @@ const Notes = (props: { noteState: [string, React.Dispatch<React.SetStateAction<
             </View>
         </Card>
     )
+}
+
+const Reminder = (props: { reminderHours: [number, React.Dispatch<React.SetStateAction<number>>] }) => {
+    const [selected, setSelected] = props.reminderHours;
+
+    return (
+        <Card>
+            <View className="w-80">
+                <Subheader text='Reminder' subtext="Set a reminder to feed baby. (Optional)"></Subheader>
+            </View>
+            <View className="flex-1 align-middle justify-center">
+                <PickerIOS
+                    selectedValue={selected}
+                    onValueChange={(value, _) => setSelected(value.valueOf() as number)}
+                    themeVariant={'light'}
+                >
+                    <PickerIOS.Item label="No reminder" value={0}></PickerIOS.Item>
+                    <PickerIOS.Item label=".5 hrs" value={.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="1 hrs" value={1}></PickerIOS.Item>
+                    <PickerIOS.Item label="1.5 hrs" value={1.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="2 hrs" value={2}></PickerIOS.Item>
+                    <PickerIOS.Item label="2.5 hrs" value={2.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="3 hrs" value={3}></PickerIOS.Item>
+                    <PickerIOS.Item label="3.5 hrs" value={3.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="4 hrs" value={4}></PickerIOS.Item>
+                    <PickerIOS.Item label="4.5 hrs" value={4.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="5 hrs" value={5}></PickerIOS.Item>
+                    <PickerIOS.Item label="5.5 hrs" value={5.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="6 hrs" value={6}></PickerIOS.Item>
+                    <PickerIOS.Item label="6.5 hrs" value={6.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="7 hrs" value={7}></PickerIOS.Item>
+                </PickerIOS>
+            </View>
+        </Card>
+    )
+
 }

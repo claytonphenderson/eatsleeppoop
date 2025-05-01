@@ -11,9 +11,9 @@ import { RecordSleepingScreen } from './screens/RecordSleepingScreen';
 import { RecordPoopScreen } from './screens/RecordPoopScreen';
 import { Text } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
+import { HistoryDetailScreen } from './screens/HistoryDetailScreen';
 
 export const storage = new MMKV();
-storage.clearAll();
 function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>
@@ -29,7 +29,7 @@ function Tabs() {
   return (
     <Tab.Navigator initialRouteName='Tracking'>
       <Tab.Screen name="Tracking" component={Tracking} options={{ headerShown: false, title: 'Tracking', tabBarIcon: () => (<Text>💩</Text>), tabBarActiveTintColor: '#30638E' }} />
-      <Tab.Screen name="HistoryScreen" component={HistoryScreen} options={{ headerShown: false, title: 'History', tabBarIcon: () => (<Text>📈</Text>), tabBarActiveTintColor: '#30638E' }} />
+      <Tab.Screen name="History" component={History} options={{ headerShown: false, title: 'History', tabBarIcon: () => (<Text>📈</Text>), tabBarActiveTintColor: '#30638E' }} />
     </Tab.Navigator>
   );
 }
@@ -46,6 +46,20 @@ function Tracking() {
       <Stack.Screen name="RecordSleepingScreen" component={RecordSleepingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="RecordPoopScreen" component={RecordPoopScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
+  )
+}
+
+
+const HistoryStack = createNativeStackNavigator();
+export type HistoryScreenNames = ['HistoryScreen', 'HistoryDetailScreen'];
+export type HistoryStackParamList = Record<HistoryScreenNames[number], any>;
+export type HistoryNavigation = NavigationProp<HistoryStackParamList>;
+function History() {
+  return (
+    <HistoryStack.Navigator initialRouteName='HistoryScreen'>
+      <HistoryStack.Screen name="HistoryScreen" component={HistoryScreen} options={{ headerShown: false }} />
+      <HistoryStack.Screen name="HistoryDetailScreen" component={HistoryDetailScreen} options={{ headerShown: false, presentation:'modal' }} />
+    </HistoryStack.Navigator>
   )
 }
 
