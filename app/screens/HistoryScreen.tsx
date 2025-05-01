@@ -2,7 +2,7 @@ import { FlatList, Text, View } from "react-native"
 import { Header } from "../components/Header"
 import { Screen } from "../components/Screen"
 import { storage } from "../App"
-import {useMMKVObject} from 'react-native-mmkv';
+import {useMMKVBoolean, useMMKVObject} from 'react-native-mmkv';
 import { Event } from "../models/event";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
@@ -15,7 +15,7 @@ export const HistoryScreen = () => {
     useFocusEffect(
         useCallback(()=>{
             const keys = storage.getAllKeys();
-            setKeys(orderBy(keys, k=>k.split('-')[1], 'desc'));
+            setKeys(orderBy(keys.filter(x=>!x.startsWith('settings')), k=>k.split('-')[1], 'desc'));
         }, [])
     );
     return (
@@ -38,7 +38,7 @@ export const HistoryScreen = () => {
 }
 
 const Row = (props:{storageKey:string}) => {
-    const [rowData, _] = useMMKVObject<Event>(props.storageKey)
+    const [rowData, _] = useMMKVObject<Event>(props.storageKey);    
     if (!rowData) return null;
     return (
         <View className="flex flex-row gap-2 overflow-hidden items-center border-blue border-b-hairline">
@@ -49,7 +49,8 @@ const Row = (props:{storageKey:string}) => {
             <View className="flex flex-row justify-around flex-1">
                 {rowData.type === 'eat' ? <View className="flex-row">
                     <Text className="text-lg text-black">🍼</Text>
-                    <Text className="text-base text-black">{rowData.duration}m</Text>
+                    {rowData.duration && <Text className="text-base text-black">{rowData.duration}m</Text>}
+                    {rowData.mlConsumed && <Text className="text-base text-black">{rowData.mlConsumed}mL</Text>}
                 </View> : <View></View>}
                 {rowData.type === 'sleep' ? <View className="flex-row">
                     <Text className="text-lg text-black">💤</Text>

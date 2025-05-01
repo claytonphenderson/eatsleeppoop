@@ -13,7 +13,7 @@ import { Text } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 
 export const storage = new MMKV();
-
+storage.clearAll();
 function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>

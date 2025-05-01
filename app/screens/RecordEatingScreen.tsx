@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, Text, TextInput, View } from "react-native";
+import { FlatList, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Header } from "../components/Header";
 import { Screen } from "../components/Screen";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
@@ -9,6 +9,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Picker } from '@react-native-picker/picker';
 import { storage, TrackingNavigation } from "../App";
 import { useNavigation } from "@react-navigation/native";
+import { useMMKV, useMMKVBoolean } from "react-native-mmkv";
+import { Event } from "../models/event";
+import { ToggleSwitch } from "../components/ToggleSwitch";
+import { useAnimatedKeyboard } from "react-native-reanimated";
+import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
 
 export const RecordEatingScreen = (props: any) => {
     const listRef = useRef<FlatList>(null);
@@ -17,17 +22,31 @@ export const RecordEatingScreen = (props: any) => {
     const [notes, setNotes] = useState('');
     const options = [<DateStep dateState={[date, setDate]} />, <HowMuch selectedState={[selected, setSelected]} />, <Notes noteState={[notes, setNotes]} />];
     const navigation = useNavigation<TrackingNavigation>();
+    const [measureInMin, setMeasureInMin] = useMMKVBoolean('settings-eatingMeasureInMin');
+    const keyboardVisible = useKeyboardVisible();
 
     const save = () => {
-        storage.set(`eat-${date.getTime()}`, JSON.stringify({
+        const val: Event = {
             id: `eat-${date.getTime()}`,
             type: 'eat',
             date,
-            duration: selected,
             note: notes
-        }));
+        };
 
+        if (measureInMin) val.duration = selected;
+        else val.mlConsumed = selected;
+
+        storage.set(`eat-${date.getTime()}`, JSON.stringify(val));
         navigation.navigate('TrackingScreen');
+    }
+
+    const handleSettingToggle = (newValue: string) => {
+        if (newValue !== 'minutes eating') {
+            setMeasureInMin(false);
+            return;
+        }
+
+        setMeasureInMin(true)
     }
 
 
@@ -38,7 +57,18 @@ export const RecordEatingScreen = (props: any) => {
                 <Header text='Eat' />
             </View>
             <View className="flex flex-1">
-
+                {!keyboardVisible && <View className="mt-5 gap-3">
+                    <View>
+                        <Subheader text='Tracking mode' subtext='Select how you would like to track eating activity'></Subheader>
+                    </View>
+                    <View>
+                        <ToggleSwitch
+                            options={['mL consumed', 'minutes eating']}
+                            initialOptionsIndex={measureInMin ? 1 : 0}
+                            onSelectChange={(value) => handleSettingToggle(value)}
+                        ></ToggleSwitch>
+                    </View>
+                </View>}
             </View>
             <View style={{ height: 360 }} className="gap-5">
                 <View className="flex items-center">
@@ -61,7 +91,7 @@ export const RecordEatingScreen = (props: any) => {
                     <PrimaryButton
                         disabled={selected === 0}
                         text='Submit'
-                        onPress={() => save() }></PrimaryButton>
+                        onPress={() => save()}></PrimaryButton>
                 </View>
             </View>
         </Screen>
@@ -87,10 +117,11 @@ const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction
 
 const HowMuch = (props: { selectedState: [number, React.Dispatch<React.SetStateAction<number>>] }) => {
     const [selected, setSelected] = props.selectedState;
+    const [measureInMin, _] = useMMKVBoolean('settings-eatingMeasureInMin');
     return (
         <Card>
             <View className="min-w-80">
-                <Subheader text='How Long?' subtext="How many minutes did baby eat?"></Subheader>
+                <Subheader text='How Much?' subtext={measureInMin ? 'How many minutes did baby eat?' : 'How many mL did baby eat?'}></Subheader>
             </View>
             <View className="flex-1 align-middle justify-center">
                 <Picker
@@ -110,6 +141,17 @@ const HowMuch = (props: { selectedState: [number, React.Dispatch<React.SetStateA
                     <Picker.Item label="50" value={50}></Picker.Item>
                     <Picker.Item label="55" value={55}></Picker.Item>
                     <Picker.Item label="60" value={60}></Picker.Item>
+                    <Picker.Item label="65" value={65}></Picker.Item>
+                    <Picker.Item label="70" value={70}></Picker.Item>
+                    <Picker.Item label="75" value={75}></Picker.Item>
+                    <Picker.Item label="80" value={80}></Picker.Item>
+                    <Picker.Item label="85" value={85}></Picker.Item>
+                    <Picker.Item label="90" value={90}></Picker.Item>
+                    <Picker.Item label="95" value={95}></Picker.Item>
+                    <Picker.Item label="100" value={100}></Picker.Item>
+                    <Picker.Item label="105" value={105}></Picker.Item>
+                    <Picker.Item label="110" value={110}></Picker.Item>
+                    <Picker.Item label="115" value={115}></Picker.Item>
                 </Picker>
             </View>
         </Card>

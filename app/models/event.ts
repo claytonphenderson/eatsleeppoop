@@ -3,6 +3,7 @@ export interface Event {
     type: string,
     date: Date,
     note: string,
+    mlConsumed?: number, 
     duration?: number,
     wet?: boolean,
     poopy?: boolean,
