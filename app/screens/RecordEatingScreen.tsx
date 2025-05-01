@@ -1,18 +1,17 @@
-import { FlatList, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Appearance, FlatList, Text, TextInput, View } from "react-native";
 import { Header } from "../components/Header";
 import { Screen } from "../components/Screen";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Card } from "../components/Card";
 import { Subheader } from "../components/Subheader";
 import { PrimaryButton } from "../components/Button";
-import React, { useEffect, useRef, useState } from "react";
-import { Picker } from '@react-native-picker/picker';
+import React, { useRef, useState } from "react";
+import { PickerIOS } from '@react-native-picker/picker';
 import { storage, TrackingNavigation } from "../App";
 import { useNavigation } from "@react-navigation/native";
-import { useMMKV, useMMKVBoolean } from "react-native-mmkv";
+import { useMMKVBoolean } from "react-native-mmkv";
 import { Event } from "../models/event";
 import { ToggleSwitch } from "../components/ToggleSwitch";
-import { useAnimatedKeyboard } from "react-native-reanimated";
 import { useKeyboardVisible } from "../hooks/useKeyboardVisible";
 
 export const RecordEatingScreen = (props: any) => {
@@ -118,41 +117,43 @@ const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction
 const HowMuch = (props: { selectedState: [number, React.Dispatch<React.SetStateAction<number>>] }) => {
     const [selected, setSelected] = props.selectedState;
     const [measureInMin, _] = useMMKVBoolean('settings-eatingMeasureInMin');
+    const colorScheme = Appearance.getColorScheme();
     return (
         <Card>
             <View className="min-w-80">
                 <Subheader text='How Much?' subtext={measureInMin ? 'How many minutes did baby eat?' : 'How many mL did baby eat?'}></Subheader>
             </View>
             <View className="flex-1 align-middle justify-center">
-                <Picker
+                <PickerIOS
                     selectedValue={selected}
-                    onValueChange={setSelected}
+                    onValueChange={(value, _) => setSelected(value.valueOf() as number)}
+                    themeVariant={colorScheme ?? undefined}
                 >
-                    <Picker.Item label="0" value={0}></Picker.Item>
-                    <Picker.Item label="5" value={5}></Picker.Item>
-                    <Picker.Item label="10" value={10}></Picker.Item>
-                    <Picker.Item label="15" value={15}></Picker.Item>
-                    <Picker.Item label="20" value={20}></Picker.Item>
-                    <Picker.Item label="25" value={25}></Picker.Item>
-                    <Picker.Item label="30" value={30}></Picker.Item>
-                    <Picker.Item label="35" value={35}></Picker.Item>
-                    <Picker.Item label="40" value={40}></Picker.Item>
-                    <Picker.Item label="45" value={45}></Picker.Item>
-                    <Picker.Item label="50" value={50}></Picker.Item>
-                    <Picker.Item label="55" value={55}></Picker.Item>
-                    <Picker.Item label="60" value={60}></Picker.Item>
-                    <Picker.Item label="65" value={65}></Picker.Item>
-                    <Picker.Item label="70" value={70}></Picker.Item>
-                    <Picker.Item label="75" value={75}></Picker.Item>
-                    <Picker.Item label="80" value={80}></Picker.Item>
-                    <Picker.Item label="85" value={85}></Picker.Item>
-                    <Picker.Item label="90" value={90}></Picker.Item>
-                    <Picker.Item label="95" value={95}></Picker.Item>
-                    <Picker.Item label="100" value={100}></Picker.Item>
-                    <Picker.Item label="105" value={105}></Picker.Item>
-                    <Picker.Item label="110" value={110}></Picker.Item>
-                    <Picker.Item label="115" value={115}></Picker.Item>
-                </Picker>
+                    <PickerIOS.Item label="0" value={0}></PickerIOS.Item>
+                    <PickerIOS.Item label="5" value={5}></PickerIOS.Item>
+                    <PickerIOS.Item label="10" value={10}></PickerIOS.Item>
+                    <PickerIOS.Item label="15" value={15}></PickerIOS.Item>
+                    <PickerIOS.Item label="20" value={20}></PickerIOS.Item>
+                    <PickerIOS.Item label="25" value={25}></PickerIOS.Item>
+                    <PickerIOS.Item label="30" value={30}></PickerIOS.Item>
+                    <PickerIOS.Item label="35" value={35}></PickerIOS.Item>
+                    <PickerIOS.Item label="40" value={40}></PickerIOS.Item>
+                    <PickerIOS.Item label="45" value={45}></PickerIOS.Item>
+                    <PickerIOS.Item label="50" value={50}></PickerIOS.Item>
+                    <PickerIOS.Item label="55" value={55}></PickerIOS.Item>
+                    <PickerIOS.Item label="60" value={60}></PickerIOS.Item>
+                    <PickerIOS.Item label="65" value={65}></PickerIOS.Item>
+                    <PickerIOS.Item label="70" value={70}></PickerIOS.Item>
+                    <PickerIOS.Item label="75" value={75}></PickerIOS.Item>
+                    <PickerIOS.Item label="80" value={80}></PickerIOS.Item>
+                    <PickerIOS.Item label="85" value={85}></PickerIOS.Item>
+                    <PickerIOS.Item label="90" value={90}></PickerIOS.Item>
+                    <PickerIOS.Item label="95" value={95}></PickerIOS.Item>
+                    <PickerIOS.Item label="100" value={100}></PickerIOS.Item>
+                    <PickerIOS.Item label="105" value={105}></PickerIOS.Item>
+                    <PickerIOS.Item label="110" value={110}></PickerIOS.Item>
+                    <PickerIOS.Item label="115" value={115}></PickerIOS.Item>
+                </PickerIOS>
             </View>
         </Card>
     )
