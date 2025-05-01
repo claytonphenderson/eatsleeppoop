@@ -100,6 +100,7 @@ export const RecordEatingScreen = (props: any) => {
 
 const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction<Date>>] }) => {
     const [date, setDate] = props.dateState;
+    const colorScheme = Appearance.getColorScheme();
     return (
         <Card>
             <View className="min-w-80 flex-1">
@@ -107,7 +108,7 @@ const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction
                     <Subheader text='When?' subtext="Pick a date and time"></Subheader>
                 </View>
                 <View className="flex-1 justify-center pr-3 items-center">
-                    <RNDateTimePicker maximumDate={new Date()} key={'when'} mode='datetime' display='default' value={date} onChange={(_, date) => setDate(new Date(date!))} />
+                    <RNDateTimePicker themeVariant={colorScheme ?? undefined} maximumDate={new Date()} key={'when'} mode='datetime' display='default' value={date} onChange={(_, date) => setDate(new Date(date!))} />
                 </View>
             </View>
         </Card>

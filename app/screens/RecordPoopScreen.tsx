@@ -1,12 +1,11 @@
-import { FlatList, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Appearance, FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Header } from "../components/Header";
 import { Screen } from "../components/Screen";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Card } from "../components/Card";
 import { Subheader } from "../components/Subheader";
 import { PrimaryButton } from "../components/Button";
-import React, { useEffect, useRef, useState } from "react";
-import { Picker } from '@react-native-picker/picker';
+import React, { useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { storage, TrackingNavigation } from "../App";
 
@@ -71,14 +70,15 @@ export const RecordPoopScreen = (props: any) => {
 
 const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction<Date>>] }) => {
     const [date, setDate] = props.dateState;
+    const colorScheme = Appearance.getColorScheme();
     return (
         <Card>
             <View className="min-w-80 flex-1">
                 <View>
                     <Subheader text='When?' subtext="Pick a date and time"></Subheader>
                 </View>
-                <View className="flex-1 justify-center pr-3  items-center">
-                    <RNDateTimePicker maximumDate={new Date()} key={'when'} mode='datetime' display='default' value={date} onChange={(_, date) => setDate(new Date(date!))} />
+                <View className="flex-1 justify-center pr-3 items-center">
+                    <RNDateTimePicker themeVariant={colorScheme ?? undefined} maximumDate={new Date()} key={'when'} mode='datetime' display='default' value={date} onChange={(_, date) => setDate(new Date(date!))} />
                 </View>
             </View>
         </Card>
@@ -87,6 +87,7 @@ const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction
 
 const HowMuch = (props: { selectedState: [{ wet: boolean, poopy: boolean }, React.Dispatch<React.SetStateAction<{ wet: boolean, poopy: boolean }>>] }) => {
     const [selected, setSelected] = props.selectedState;
+
     return (
         <Card>
             <View className="min-w-80">

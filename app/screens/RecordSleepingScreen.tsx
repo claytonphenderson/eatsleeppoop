@@ -1,12 +1,12 @@
-import { FlatList, ScrollView, Text, TextInput, View } from "react-native";
+import { Appearance, FlatList, Text, TextInput, View } from "react-native";
 import { Header } from "../components/Header";
 import { Screen } from "../components/Screen";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Card } from "../components/Card";
 import { Subheader } from "../components/Subheader";
 import { PrimaryButton } from "../components/Button";
-import React, { useEffect, useRef, useState } from "react";
-import { Picker } from '@react-native-picker/picker';
+import React, { useRef, useState } from "react";
+import { PickerIOS } from '@react-native-picker/picker';
 import { storage, TrackingNavigation } from "../App";
 import { useNavigation } from "@react-navigation/native";
 
@@ -71,6 +71,8 @@ export const RecordSleepingScreen = (props: any) => {
 
 const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction<Date>>] }) => {
     const [date, setDate] = props.dateState;
+    const colorScheme = Appearance.getColorScheme();
+
     return (
         <Card>
             <View className="min-w-80 flex-1">
@@ -78,7 +80,7 @@ const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction
                     <Subheader text='When?' subtext="Pick a date and time"></Subheader>
                 </View>
                 <View className="flex-1 justify-center pr-3  items-center">
-                    <RNDateTimePicker maximumDate={new Date()} key={'when'} mode='datetime' display='default' value={date} onChange={(_, date) => setDate(new Date(date!))} />
+                    <RNDateTimePicker themeVariant={colorScheme ?? undefined} maximumDate={new Date()} key={'when'} mode='datetime' display='default' value={date} onChange={(_, date) => setDate(new Date(date!))} />
                 </View>
             </View>
         </Card>
@@ -87,34 +89,37 @@ const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction
 
 const HowMuch = (props: { selectedState: [number, React.Dispatch<React.SetStateAction<number>>] }) => {
     const [selected, setSelected] = props.selectedState;
+    const colorScheme = Appearance.getColorScheme();
+
     return (
         <Card>
             <View className="min-w-80">
                 <Subheader text='How Long?' subtext="How many hours did baby sleep?"></Subheader>
             </View>
             <View className="flex-1 align-middle justify-center">
-                <Picker
+                <PickerIOS
                     selectedValue={selected}
-                    onValueChange={setSelected}
+                    onValueChange={(value, _) => setSelected(value.valueOf() as number)}
+                    themeVariant={colorScheme ?? undefined}
                 >
-                    <Picker.Item label="0" value={0}></Picker.Item>
-                    <Picker.Item label=".5" value={.5}></Picker.Item>
-                    <Picker.Item label="1" value={1}></Picker.Item>
-                    <Picker.Item label="1.5" value={1.5}></Picker.Item>
-                    <Picker.Item label="2" value={2}></Picker.Item>
-                    <Picker.Item label="2.5" value={2.5}></Picker.Item>
-                    <Picker.Item label="3" value={3}></Picker.Item>
-                    <Picker.Item label="3.5" value={3.5}></Picker.Item>
-                    <Picker.Item label="4" value={4}></Picker.Item>
-                    <Picker.Item label="4.5" value={4.5}></Picker.Item>
-                    <Picker.Item label="5" value={5}></Picker.Item>
-                    <Picker.Item label="5.5" value={5.5}></Picker.Item>
-                    <Picker.Item label="6" value={6}></Picker.Item>
-                    <Picker.Item label="6.5" value={6.5}></Picker.Item>
-                    <Picker.Item label="7" value={7}></Picker.Item>
-                    <Picker.Item label="7.5" value={7.5}></Picker.Item>
-                    <Picker.Item label="8" value={8}></Picker.Item>
-                </Picker>
+                    <PickerIOS.Item label="0" value={0}></PickerIOS.Item>
+                    <PickerIOS.Item label=".5" value={.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="1" value={1}></PickerIOS.Item>
+                    <PickerIOS.Item label="1.5" value={1.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="2" value={2}></PickerIOS.Item>
+                    <PickerIOS.Item label="2.5" value={2.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="3" value={3}></PickerIOS.Item>
+                    <PickerIOS.Item label="3.5" value={3.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="4" value={4}></PickerIOS.Item>
+                    <PickerIOS.Item label="4.5" value={4.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="5" value={5}></PickerIOS.Item>
+                    <PickerIOS.Item label="5.5" value={5.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="6" value={6}></PickerIOS.Item>
+                    <PickerIOS.Item label="6.5" value={6.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="7" value={7}></PickerIOS.Item>
+                    <PickerIOS.Item label="7.5" value={7.5}></PickerIOS.Item>
+                    <PickerIOS.Item label="8" value={8}></PickerIOS.Item>
+                </PickerIOS>
             </View>
         </Card>
     )
