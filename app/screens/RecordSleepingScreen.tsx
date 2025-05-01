@@ -1,4 +1,4 @@
-import { Appearance, FlatList, Text, TextInput, View } from "react-native";
+import { FlatList, Text, TextInput, View } from "react-native";
 import { Header } from "../components/Header";
 import { Screen } from "../components/Screen";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
@@ -71,7 +71,6 @@ export const RecordSleepingScreen = (props: any) => {
 
 const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction<Date>>] }) => {
     const [date, setDate] = props.dateState;
-    const colorScheme = Appearance.getColorScheme();
 
     return (
         <Card>
@@ -80,7 +79,7 @@ const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction
                     <Subheader text='When?' subtext="Pick a date and time"></Subheader>
                 </View>
                 <View className="flex-1 justify-center pr-3  items-center">
-                    <RNDateTimePicker themeVariant={colorScheme ?? undefined} maximumDate={new Date()} key={'when'} mode='datetime' display='default' value={date} onChange={(_, date) => setDate(new Date(date!))} />
+                    <RNDateTimePicker themeVariant={'light'} maximumDate={new Date()} key={'when'} mode='datetime' display='default' value={date} onChange={(_, date) => setDate(new Date(date!))} />
                 </View>
             </View>
         </Card>
@@ -89,7 +88,6 @@ const DateStep = (props: { dateState: [Date, React.Dispatch<React.SetStateAction
 
 const HowMuch = (props: { selectedState: [number, React.Dispatch<React.SetStateAction<number>>] }) => {
     const [selected, setSelected] = props.selectedState;
-    const colorScheme = Appearance.getColorScheme();
 
     return (
         <Card>
@@ -100,7 +98,7 @@ const HowMuch = (props: { selectedState: [number, React.Dispatch<React.SetStateA
                 <PickerIOS
                     selectedValue={selected}
                     onValueChange={(value, _) => setSelected(value.valueOf() as number)}
-                    themeVariant={colorScheme ?? undefined}
+                    themeVariant={'light'}
                 >
                     <PickerIOS.Item label="0" value={0}></PickerIOS.Item>
                     <PickerIOS.Item label=".5" value={.5}></PickerIOS.Item>
