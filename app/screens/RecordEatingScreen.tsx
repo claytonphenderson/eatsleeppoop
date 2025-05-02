@@ -22,7 +22,10 @@ export const RecordEatingScreen = (props: any) => {
     const [date, setDate] = useState(new Date());
     const [notes, setNotes] = useState('');
     const [reminderHrs, setReminderHrs] = useState(0);
-    const options = [<DateStep dateState={[date, setDate]} />, <HowMuch selectedState={[selected, setSelected]} />, <Notes noteState={[notes, setNotes]} />, <Reminder reminderHours={[reminderHrs, setReminderHrs]} />];
+    const options = [<DateStep dateState={[date, setDate]} />, 
+        <HowMuch selectedState={[selected, setSelected]} />, 
+        <Notes noteState={[notes, setNotes]} />, 
+        <Reminder reminderHours={[reminderHrs, setReminderHrs]} />];
     const navigation = useNavigation<TrackingNavigation>();
     const [measureInMin, setMeasureInMin] = useMMKVBoolean('settings-eatingMeasureInMin');
     const keyboardVisible = useKeyboardVisible();
